@@ -35,7 +35,7 @@ class Array(object):
         Return element at index k
         """
         if not 0 <= item_index < self.item_count:
-            return IndexError("index out of range!")
+            raise IndexError("index out of range!")
         return self.primary_array[item_index]
 
     def append(self, item):
@@ -61,7 +61,7 @@ class Array(object):
 
     def delete(self, item_index):
         if 0 > item_index or item_index > self.item_count - 1:
-            return IndexError("index out of range!")
+            raise IndexError("index out of range!")
 
         while 0 <= item_index < self.item_count - 1:
             self.primary_array[item_index] = self.primary_array[item_index + 1]
