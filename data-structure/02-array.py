@@ -85,3 +85,11 @@ x.delete(0)
 print(x.list())
 
 print(x.delete(7))
+
+import sys
+
+print(id(x))
+print(id(x[0]))
+print(sys.getsizeof(x[0]))
+print(id(x[1]))
+print(id(x[2]))
