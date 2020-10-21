@@ -35,7 +35,7 @@ class Array(object):
         Return element at index k
         """
         if not 0 <= item_index < self.item_count:
-            return IndexError("index out of range!")
+            raise IndexError("index out of range!")
         return self.primary_array[item_index]
 
     def append(self, item):
@@ -61,7 +61,7 @@ class Array(object):
 
     def delete(self, item_index):
         if 0 > item_index or item_index > self.item_count - 1:
-            return IndexError("index out of range!")
+            raise IndexError("index out of range!")
 
         while 0 <= item_index < self.item_count - 1:
             self.primary_array[item_index] = self.primary_array[item_index + 1]
@@ -85,3 +85,11 @@ x.delete(0)
 print(x.list())
 
 print(x.delete(7))
+
+import sys
+
+print(id(x))
+print(id(x[0]))
+print(sys.getsizeof(x[0]))
+print(id(x[1]))
+print(id(x[2]))
