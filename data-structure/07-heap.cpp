@@ -15,16 +15,28 @@ class Heap{
     private:
         int * arr;
         int length = 0;
+        int array_capacity;
     public:
         Heap(int capacity);
         void heappush(int item);
         void display();
         int heappop();
+        bool is_full();
+        bool is_empty();
         // is_empty, is_full 있어야 됨.
 };
 
 Heap::Heap(int capacity){
     Heap::arr = (element*)malloc(sizeof(element) * capacity);
+    Heap::array_capacity = capacity;
+}
+
+bool Heap::is_full(){
+    return Heap::array_capacity == Heap::length;
+}
+
+bool Heap::is_empty(){
+    return Heap::length == 0;
 }
 
 void Heap::display(){
@@ -34,6 +46,9 @@ void Heap::display(){
 }
 
 void Heap::heappush(int item){
+    if(Heap::is_full())
+        throw -1;
+
     int & length = Heap::length;
     int * arr = Heap::arr;
     
@@ -53,36 +68,52 @@ void Heap::heappush(int item){
 }
 
 int Heap::heappop(){
+    if(Heap::is_empty())
+        throw -1;
+
     int item = Heap::arr[0];
     int idx = 1;
     int l_idx = 2, r_idx = 3;
     int * arr = Heap::arr;
-    while(l_idx <= Heap::length && r_idx <= Heap::length){
-        if(arr[idx-1] < arr[l_idx-1]){
-            SWAP(arr[idx-1], arr[l_idx-1]);
-            idx = l_idx;
-        } else if (arr[idx-1] < arr[r_idx-1]) {
-            SWAP(arr[idx-1], arr[r_idx-1]);
-            idx = r_idx;
-        } else break;
+
+    SWAP(arr[--Heap::length], arr[0]);
+
+    while(l_idx <= Heap::length && r_idx - 1 < Heap::length){
+        if(arr[r_idx-1] < arr[l_idx-1]){  // left 
+            if (arr[l_idx-1] > arr[idx-1]){
+                SWAP(arr[l_idx-1], arr[idx-1]); 
+                idx = l_idx;
+            } else break;
+        } else { // right
+            if (arr[r_idx-1] > arr[idx-1]){
+                SWAP(arr[r_idx-1], arr[idx-1]);
+                idx = r_idx;
+            } else break;
+        }
         l_idx = idx * 2;
         r_idx = l_idx + 1;
     }
-    SWAP(arr[Heap::length-1], arr[0]);
-    Heap::length--;
+
     return item;
 }
 
 
 int main(void){
-    Heap h = Heap(10);
-    h.heappush(1);
+    Heap h = Heap(13);
+    
+    //h.heappush(1);
+    //h.heappush(3);
+    //h.heappush(5);
+
+    for (int i=0; i<10; i++) {
+        h.heappush(i * 3 + 1);
+    }
+
     h.display();
-    h.heappush(3);
-    h.display();
-    h.heappush(5);
-    h.display();
-    cout << h.heappop() << endl;
-    cout << h.heappop() << endl;
-    cout << h.heappop() << endl;
+
+    for (int i=0; i<10; i++) {
+        cout << h.heappop() << " ";
+        //h.heappop();
+        //h.display();
+    }
 }
